@@ -5,9 +5,15 @@ name: online-banking-app
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - "main"
+    paths:
+      - 'account-service/**'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - "main"
+    paths:
+      - 'account-service/**'
 
 permissions:
   contents: read
