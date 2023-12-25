@@ -10,13 +10,16 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  checkout-repository:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+  install-dependencies:
+    needs: checkout-repository
+    runs-on: ubuntu-latest
+    steps:
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
@@ -29,12 +32,20 @@ jobs:
           pip install flake8
           pip install -r requirements.txt || true
 
+  lint:
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
       - name: Lint with flake8
         working-directory: account-service
         run: |
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
+  test-with-pytest:
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
       - name: Test with pytest
         working-directory: account-service/backend/test
         run: |
