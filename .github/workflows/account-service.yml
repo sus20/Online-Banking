@@ -44,3 +44,4 @@ jobs:
           report_paths: '**/junit.xml'
           detailed_summary: true
           include_passed: true
+          github_token: ${{ secrets.TOKEN_GITHUB }}
