@@ -41,5 +41,6 @@ jobs:
         run: |
           cd account-service/backend
           pip install -r requirements.txt  # Install dependencies
+          pip install httpx
           cd test
           pytest
