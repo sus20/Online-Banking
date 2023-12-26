@@ -6,12 +6,8 @@ name: Account service
 on:
   push:
     branches: ["main"]
-    paths:
-      - "account-service/**"
   pull_request:
     branches: ["main"]
-    paths:
-      - "account-service/**"
 
 permissions:
   contents: read
