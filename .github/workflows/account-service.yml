@@ -39,5 +39,7 @@ jobs:
 
       - name: Test with pytest
         run: |
-          cd account-service/backend/test
+          cd account-service/backend
+          pip install -r requirements.txt  # Install dependencies
+          cd test
           pytest
