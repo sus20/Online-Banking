@@ -10,13 +10,31 @@ app = FastAPI()
 port = int(os.getenv("PORT-ACCOUNT", 8000))
 
 
-try:
-    client = MongoClient("mongodb://localhost:27017")
-    db = client["online_banking"]
-    accounts_collection = db["accounts"]
-    logging.info("Connected to MongoDB successfully")
-except Exception as e:
-    logging.error(f"Error connecting to MongoDB: {e}")
+def setup_mongo_client():
+    try:
+        client = MongoClient("mongodb://localhost:27017")
+        db = client["online_banking"]
+        accounts_collection = db["accounts"]
+        logging.info("Connected to MongoDB successfully")
+        return client, accounts_collection
+    except Exception as e:
+        logging.error(f"Error connecting to MongoDB: {e}")
+        raise
+
+
+# Call setup_mongo_client during app startup
+@app.on_event("startup")
+def startup_event():
+    global client, accounts_collection
+    client, accounts_collection = setup_mongo_client()
+
+
+# Close the MongoDB client during app shutdown
+@app.on_event("shutdown")
+def shutdown_event():
+    global client
+    client.close()
+    logging.info("Closed MongoDB connection during shutdown")
 
 
 # Placeholder responses
